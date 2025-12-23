@@ -124,7 +124,7 @@
 
       <!-- 页脚 -->
       <div class="footer">
-        <p>© 2024 闪聊 | 保护隐私的临时聊天工具</p>
+        <p>© 2025 闪聊 | 保护隐私的临时聊天工具</p>
         <p class="footer-note">数据不会永久保存，请勿发送敏感信息</p>
       </div>
     </div>
@@ -166,7 +166,7 @@ const generateRandomName = () => {
 }
 
 const formatRoomId = () => {
-  roomIdInput.value = roomIdInput.value.toUpperCase().replace(/[^A-Z0-9]/g, '')
+  roomIdInput.value = roomIdInput.value.replace(/[^A-Za-z0-9]/g, '')
 }
 
 const createNewRoom = async () => {
@@ -265,7 +265,7 @@ onMounted(() => {
   const roomId = urlParams.get('room')
 
   if (roomId && roomId.length === 6) {
-    roomIdInput.value = roomId.toUpperCase()
+    roomIdInput.value = roomId
   }
 })
 </script>
@@ -506,7 +506,7 @@ onMounted(() => {
   font-size: 1rem;
   font-weight: 600;
   letter-spacing: 1px;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   text-align: center;
   outline: none;
   transition: all 0.3s;

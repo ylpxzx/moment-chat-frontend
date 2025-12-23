@@ -125,9 +125,9 @@ const userStore = useUserStore()
 const chatStore = useChatStore()
 
 // Computed
-const roomIdDisplay = computed(() => props.roomId.toUpperCase())
+const roomIdDisplay = computed(() => props.roomId)
 const connectionStatus = computed(() => chatStore.connectionStatus)
-const userCount = computed(() => chatStore.users.length + 1) // +1 包括自己
+const userCount = computed(() => chatStore.users.length) // +1 包括自己
 const users = computed(() => chatStore.users)
 
 const connectionStatusText = computed(() => {

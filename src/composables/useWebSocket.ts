@@ -67,8 +67,6 @@ export function useWebSocket() {
 
   const send = (type: string, payload: any) => {
     if (socket.value && socket.value.readyState === WebSocket.OPEN) {
-      console.log('消息：', JSON.stringify({ type, ...payload }))
-
       socket.value.send(JSON.stringify({ type, ...payload }))
     } else {
       console.warn('WebSocket is not connected')

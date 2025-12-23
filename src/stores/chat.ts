@@ -121,7 +121,6 @@ export const useChatStore = defineStore('chat', () => {
   const handleWebSocketMessage = (data: any) => {
     switch (data.type) {
       case 'new_message':
-        console.log('新消息：', data)
         addMessage(data.payload)
         break
       case 'user_join':
@@ -129,6 +128,8 @@ export const useChatStore = defineStore('chat', () => {
           id: data.payload.userId,
           username: data.payload.username,
           avatar: data.payload.avatar,
+          userCount: data.payload.userCount,
+          userList: data.payload.userList,
         })
         break
       case 'user_leave':
