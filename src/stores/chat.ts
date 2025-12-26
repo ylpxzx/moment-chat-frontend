@@ -9,6 +9,7 @@ export const useChatStore = defineStore('chat', () => {
   const users = ref<any[]>([])
   const connectionStatus = ref('disconnected')
   const userTyping = ref<any>(null)
+  const roomInfo = ref<any>(null)
 
   // WebSocket
   const { connect, disconnect, sendMessage } = useWebSocket()
@@ -37,11 +38,17 @@ export const useChatStore = defineStore('chat', () => {
     connectionStatus.value = 'connecting'
 
     // 连接WebSocket
+    // 参数1: 房间ID
+    // 参数2: 用户信息
+    // 参数3: 回调函数配置对象
     connect(roomId, userInfo, {
+      // 接收消息时的回调处理
       onMessage: handleWebSocketMessage,
+      // 连接成功时的回调
       onConnect: () => {
         connectionStatus.value = 'connected'
       },
+      // 断开连接时的回调
       onDisconnect: () => {
         connectionStatus.value = 'disconnected'
       },
@@ -99,10 +106,14 @@ export const useChatStore = defineStore('chat', () => {
     }
   }
 
+  const updateRoomInfo = (user: any) => {
+    roomInfo.value = user
+  }
+
   const removeUser = (userId: string) => {
-    const index = users.value.findIndex((user) => user.id === userId)
+    const index = roomInfo.value.userList.findIndex((user: any) => user.userId === userId)
     if (index !== -1) {
-      users.value.splice(index, 1)
+      roomInfo.value.userList.splice(index, 1)
     }
   }
 
@@ -124,7 +135,9 @@ export const useChatStore = defineStore('chat', () => {
         addMessage(data.payload)
         break
       case 'user_join':
-        addUser({
+        console.log('监听：', data)
+
+        updateRoomInfo({
           id: data.payload.userId,
           username: data.payload.username,
           avatar: data.payload.avatar,
@@ -162,6 +175,7 @@ export const useChatStore = defineStore('chat', () => {
     messages,
     currentRoom,
     users,
+    roomInfo,
     connectionStatus,
     userTyping,
 

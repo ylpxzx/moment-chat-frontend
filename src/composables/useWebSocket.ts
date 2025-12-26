@@ -4,6 +4,7 @@ export function useWebSocket() {
   const socket = ref<any>(null)
   const reconnectAttempts = ref(0)
   const maxReconnectAttempts = 5
+  const isManuallyDisconnected = ref(false)
 
   const connect = (roomId: string, userInfo: any, callbacks: any = {}) => {
     // 构建WebSocket URL
@@ -14,6 +15,7 @@ export function useWebSocket() {
     socket.value.onopen = () => {
       console.log('WebSocket connected')
       reconnectAttempts.value = 0
+      isManuallyDisconnected.value = false
 
       // 发送加入房间消息
       send('join', userInfo)
@@ -41,8 +43,8 @@ export function useWebSocket() {
         callbacks.onDisconnect()
       }
 
-      // 尝试重连
-      if (reconnectAttempts.value < maxReconnectAttempts) {
+      // 非主动断开时尝试重连
+      if (!isManuallyDisconnected.value && reconnectAttempts.value < maxReconnectAttempts) {
         reconnectAttempts.value++
         setTimeout(() => {
           console.log(
@@ -59,6 +61,7 @@ export function useWebSocket() {
   }
 
   const disconnect = () => {
+    isManuallyDisconnected.value = true
     if (socket.value) {
       socket.value.close()
       socket.value = null

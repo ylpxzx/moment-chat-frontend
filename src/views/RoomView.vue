@@ -17,7 +17,7 @@
               <span class="dot" :class="connectionStatusClass"></span>
               {{ connectionStatusText }}
             </span>
-            <span class="user-count"> 👥 {{ users[0]?.userCount }} 人在线 </span>
+            <span class="user-count"> 👥 {{ roomInfo?.userList?.length }} 人在线 </span>
           </div>
         </div>
 
@@ -34,13 +34,13 @@
       </div>
 
       <!-- 在线用户列表 -->
-      <div v-if="users.length > 0" class="online-users">
+      <div v-if="roomInfo?.userList?.length > 0" class="online-users">
         <div class="users-label">
           <span class="users-icon">👥</span>
           <span>在线成员</span>
         </div>
         <div class="users-list">
-          <div v-for="user in users[0]?.userList" :key="user.id" class="user-badge">
+          <div v-for="user in roomInfo?.userList" :key="user.id" class="user-badge">
             <img :src="user.avatar" :alt="user.username" class="user-avatar-sm" />
             <span class="user-name-sm">{{ user.username }}</span>
           </div>
@@ -279,11 +279,11 @@ const roomIdDisplay = computed(() => roomId.value)
 const connectionStatus = computed(() => chatStore.connectionStatus)
 // const userCount = computed(() => chatStore.users.length)
 const users = computed(() => chatStore.users)
+const roomInfo = computed(() => chatStore.roomInfo)
 const messages = computed(() => chatStore.messages)
 const userTyping = computed(() => chatStore.userTyping)
 const currentUserId = computed(() => userStore.userId)
-console.log('store数据:', chatStore);
-
+console.log('store数据:', roomInfo)
 
 const connectionStatusClass = computed(() => {
   switch (connectionStatus.value) {
